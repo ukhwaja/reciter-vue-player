@@ -12,6 +12,12 @@
         <div class="ui labeled input">
           <label for="verse_input" class="ui label">Verse</label>
           <input id="verse_input" v-model="verseNumber" type="number" min="1" v-bind:max="verses.count" length="3" value="1">
+            <div class="ui buttons">
+              <button type="button" v-if="verseNumber > 1" @click="verseNumber--" class="ui teal button">-</button>
+              <button type="button" v-else class="ui disabled teal button">-</button>
+              <button type="button" v-if="verseNumber < verses.count" @click="verseNumber++" class="ui teal button">+</button>
+              <button type="button" v-else class="ui disabled teal button">+</button>
+            </div>
         </div>
       </form>
       <div class="text">
@@ -48,7 +54,6 @@ export default {
   created () {
     axios.get('../static/resources/surah.json')
       .then(response => {
-        // JSON responses are automatically parsed.
         this.surahs = response.data
       })
       .catch(e => {
@@ -56,7 +61,6 @@ export default {
       })
     axios.get('../static/resources/Surah/surah_1.json')
       .then(response => {
-        // JSON responses are automatically parsed.
         this.verses = response.data
       })
       .catch(e => {
@@ -64,7 +68,6 @@ export default {
       })
     axios.get('../static/resources/Translation/en_translation_1.json')
       .then(response => {
-        // JSON responses are automatically parsed.
         this.translation = response.data
       })
       .catch(e => {
@@ -100,6 +103,7 @@ export default {
   watch: {
     surahNumber: function (val) {
       console.log(val)
+      this.verseNumber = 1
       this.getSurah(val)
       this.getTranslation(val)
     }
@@ -110,7 +114,6 @@ export default {
 require('semantic-ui-css/semantic.css')
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .main {
   width: 50%;
