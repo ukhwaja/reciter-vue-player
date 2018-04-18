@@ -22,6 +22,7 @@
 <script>
 
 import axios from 'axios'
+import _ from 'lodash'
 
 export default {
   name: 'myMuqri',
@@ -55,24 +56,28 @@ export default {
   },
 
   methods: {
-    getSurah (val) {
-      axios.get('../static/resources/Surah/surah_' + val + '.json')
-        .then(response => {
-          this.verses = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-    },
-    getTranslation (val) {
-      axios.get('../static/resources/Translation/en_translation_' + val + '.json')
-        .then(response => {
-          this.translation = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-    }
+    getSurah: _.debounce(
+      function (val) {
+        axios.get('../static/resources/Surah/surah_' + val + '.json')
+          .then(response => {
+            this.verses = response.data
+          })
+          .catch(e => {
+            this.errors.push(e)
+          })
+      }, 500
+    ),
+    getTranslation: _.debounce(
+      function (val) {
+        axios.get('../static/resources/Translation/en_translation_' + val + '.json')
+          .then(response => {
+            this.translation = response.data
+          })
+          .catch(e => {
+            this.errors.push(e)
+          })
+      }, 500
+    )
   },
 
   watch: {
