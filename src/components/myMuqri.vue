@@ -74,36 +74,41 @@ export default {
   },
 
   methods: {
-    getSurah: _.debounce(
-      function (val) {
-        axios.get('../static/resources/Surah/surah_' + val + '.json')
-          .then(response => {
-            this.verses = response.data
-          })
-          .catch(e => {
-            this.errors.push(e)
-          })
-      }, 500
-    ),
-    getTranslation: _.debounce(
-      function (val) {
-        axios.get('../static/resources/Translation/en_translation_' + val + '.json')
-          .then(response => {
-            this.translation = response.data
-          })
-          .catch(e => {
-            this.errors.push(e)
-          })
-      }, 500
-    )
+    getSurah: function (val) {
+      axios.get('../static/resources/Surah/surah_' + val + '.json')
+        .then(response => {
+          this.verses = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    getTranslation: function (val) {
+      axios.get('../static/resources/Translation/en_translation_' + val + '.json')
+        .then(response => {
+          this.translation = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    hideText: () => {
+      $('.text .verse').hide()
+      $('.text .translation').hide()
+    },
+    showText: _.debounce(() => {
+      $('.text .verse').show()
+      $('.text .translation').show()
+    }, 500)
   },
 
   watch: {
     surahNumber: function (val) {
-      console.log(val)
+      this.hideText()
       this.verseNumber = 1
       this.getSurah(val)
       this.getTranslation(val)
+      this.showText()
     }
   }
 
