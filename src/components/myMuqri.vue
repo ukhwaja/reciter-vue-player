@@ -5,24 +5,22 @@
       <form class="form">
         <div class="ui labeled input">
           <label for="surah_input" class="ui label">Surah</label>
-          <select id="surah_input" class="ui dropdown" v-model="surahNumber" type="number" min="1" max="114" length="3" value="1">
+          <select id="surah_input" class="ui search dropdown" v-model="surahNumber">
             <option v-for="(surah, index) in surahs" :key="index" :value="index + 1">{{surah.index}} - {{surah.title}}</option>
           </select>
         </div>
-        <div class="ui labeled input">
+        <div class="ui action labeled input">
           <label for="verse_input" class="ui label">Verse</label>
-          <input id="verse_input" v-model="verseNumber" type="number" min="1" v-bind:max="verses.count" length="3" value="1">
-            <div class="ui buttons">
-              <button type="button" v-if="verseNumber > 1" @click="verseNumber--" class="ui teal button">-</button>
-              <button type="button" v-else class="ui disabled teal button">-</button>
-              <button type="button" v-if="verseNumber < verses.count" @click="verseNumber++" class="ui teal button">+</button>
-              <button type="button" v-else class="ui disabled teal button">+</button>
-            </div>
+          <input id="verse_input" v-model="verseNumber" type="number" min="1" v-bind:max="verses.count" maxlength="3" value="1">
+          <button type="button" v-if="verseNumber > 1" @click="verseNumber--" class="ui teal button">-</button>
+          <button type="button" v-else class="ui disabled teal button">-</button>
+          <button type="button" v-if="verseNumber < verses.count" @click="verseNumber++" class="ui teal button">+</button>
+          <button type="button" v-else class="ui disabled teal button">+</button>
         </div>
       </form>
       <div class="text">
-      <p v-if="verses" class="verse"><strong class>{{verses.verse["verse_" + verseNumber]}}</strong></p>
-      <p v-if="translation" lang="en" class="translation"><strong class>{{translation.verse["verse_" + verseNumber]}}</strong></p>
+      <p v-if="verses.verse" class="verse"><strong class>{{verses.verse["verse_" + verseNumber]}}</strong></p>
+      <p v-if="translation.verse" class="translation" lang="en"><strong class>{{translation.verse["verse_" + verseNumber]}}</strong></p>
       </div>
       <ul v-if="errors && errors.length">
         <li v-for="error of errors" :key='error'>
@@ -110,11 +108,20 @@ export default {
   }
 
 }
-
-require('semantic-ui-css/semantic.css')
 </script>
 
 <style scoped>
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
 .main {
   width: 50%;
   margin: 0 auto;
@@ -142,8 +149,5 @@ require('semantic-ui-css/semantic.css')
 }
 h1, h2 {
   font-weight: normal;
-}
-a {
-  color: #42b983;
 }
 </style>

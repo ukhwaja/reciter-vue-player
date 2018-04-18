@@ -2,6 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.js'
 
 Vue.config.productionTip = false
 
