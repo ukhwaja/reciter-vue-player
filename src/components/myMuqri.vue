@@ -1,33 +1,36 @@
 <template>
-  <div class="main ui grid">
-    <div class="one column">
-      <h2>{{verses.name}}</h2>
-      <form class="form">
-        <div class="ui labeled input">
-          <label for="surah_input" class="ui label">Surah</label>
-          <select id="surah_input" class="ui search dropdown" v-model="surahNumber">
-            <option v-for="(surah, index) in surahs" :key="index" :value="index + 1">{{surah.index}} - {{surah.title}}</option>
-          </select>
-        </div>
-        <div class="ui action labeled input">
-          <label for="verse_input" class="ui label">Verse</label>
-          <input id="verse_input" v-model="verseNumber" type="number" min="1" v-bind:max="verses.count" maxlength="3" value="1">
+  <div class="main">
+    <div class="ui grid">
+      <div class="row centered ui big input">
+        <select class="ui dropdown" v-model="surahNumber">
+          <option v-for="(surah, index) in surahs" :key="index" :value="index + 1">{{surah.index}} - {{surah.title}}</option>
+        </select>
+      </div>
+      <div class="row centered">
+        <div class="ui action big input labeled">
+          <div class="ui label">Verse</div>
+          <input class="input_verse" v-model="verseNumber" type="number" min="1" v-bind:max="verses.count" size="3" value="1">
           <button type="button" v-if="verseNumber > 1" @click="verseNumber--" class="ui teal button">-</button>
           <button type="button" v-else class="ui disabled teal button">-</button>
           <button type="button" v-if="verseNumber < verses.count" @click="verseNumber++" class="ui teal button">+</button>
           <button type="button" v-else class="ui disabled teal button">+</button>
         </div>
-      </form>
-      <div class="text">
-      <p v-if="verses.verse" class="verse"><strong class>{{verses.verse["verse_" + verseNumber]}}</strong></p>
-      <p v-if="translation.verse" class="translation" lang="en"><strong class>{{translation.verse["verse_" + verseNumber]}}</strong></p>
       </div>
-      <ul v-if="errors && errors.length">
-        <li v-for="error of errors" :key='error'>
-          {{error.message}}
-        </li>
-      </ul>
     </div>
+    <div class="slate_segment ui stacked segment">
+      <div class="slate_loader ui inverted">
+        <div class="ui text loader">Loading</div>
+        <div class="slate_text ui text">
+          <p v-if="verses.verse" class="verse"><strong class>{{verses.verse["verse_" + verseNumber]}}</strong></p>
+          <p v-if="translation.verse" class="translation" lang="en"><strong class>{{translation.verse["verse_" + verseNumber]}}</strong></p>
+        </div>
+      </div>
+    </div>
+    <ul v-if="errors && errors.length">
+      <li v-for="error of errors" :key='error'>
+        {{error.message}}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -95,8 +98,10 @@ export default {
     hideText: () => {
       $('.text .verse').hide()
       $('.text .translation').hide()
+      $('.slate_loader').addClass('active dimmer')
     },
     showText: _.debounce(() => {
+      $('.slate_loader').removeClass('active dimmer')
       $('.text .verse').show()
       $('.text .translation').show()
     }, 500)
@@ -113,6 +118,10 @@ export default {
   }
 
 }
+
+$(document).ready(function () {
+  $('.ui.grid .ui.dropdown').dropdown()
+})
 </script>
 
 <style scoped>
@@ -123,34 +132,31 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
 .main {
-  width: 50%;
+  max-width: 450px;
   margin: 0 auto;
+}
+.form {
+  background-color: lightblue;
 }
 .verse {
   text-align: right;
   font-size: 22pt;
 }
+.input_verse {
+  width: 80px;
+  max-width: 80px;
+  min-width: 80px;
+}
 .translation[lang='en'] {
   font-size: 10pt;
   text-align: left;
 }
-.text {
-  margin: 0 auto;
-  display: block;
-  max-width: 380px;
-  min-height: 300px;
-  background-color: rgb(169, 240, 208);
+.slate_segment {
+  background-color: rgb(123, 226, 209);
+  min-height: 100px;
+  margin: 2em;
   padding: 2em;
-  border-radius: 1em;
-  transition: all 3ms ease;
-}
-.form {
-  margin: 2em auto;
 }
 h1, h2 {
   font-weight: normal;

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>Memorize Qur'an</h1>
     <MyMuqri/>
   </div>
 </template>
