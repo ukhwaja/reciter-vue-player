@@ -120,7 +120,7 @@ export default {
 }
 
 $(document).ready(function () {
-  $('.ui.grid .ui.dropdown').dropdown()
+  $('select').dropdown()
 })
 </script>
 
