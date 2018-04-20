@@ -16,6 +16,19 @@
           <button type="button" v-else class="ui disabled teal button">+</button>
         </div>
       </div>
+      <div class="row centered">
+        <div class="ui big buttons teal">
+          <div @click="makeActive" class="ui button">
+            <i class="play icon"></i> Play
+          </div>
+          <div @click="makeActive" class="ui button">
+            <i class="redo alternate icon"></i> Repeat
+          </div>
+          <div @click="makeActive" class="ui button">
+            <i class="hourglass half icon"></i> Delay
+          </div>
+        </div>
+      </div>
     </div>
     <div class="slate_segment ui stacked segment">
       <div class="slate_loader ui inverted">
@@ -77,6 +90,11 @@ export default {
   },
 
   methods: {
+    makeActive: _.debounce(
+      function (event) {
+        $(event.target).toggleClass('active')
+      }, 100
+    ),
     getSurah: function (val) {
       axios.get('../static/resources/Surah/surah_' + val + '.json')
         .then(response => {
