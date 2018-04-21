@@ -2,6 +2,8 @@
 
 > Memorize Qur'an App
 
+> JSON [source](https://github.com/semarketir/quranjson)
+
 ## Build Setup
 
 ``` bash

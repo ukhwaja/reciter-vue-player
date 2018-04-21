@@ -58,6 +58,7 @@ export default {
     return {
       surahs: [],
       verses: [],
+      translationLang: 'en',
       translation: [],
       errors: [],
       verseNumber: 1,
@@ -80,7 +81,7 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
-    axios.get('../static/resources/Translation/en_translation_1.json')
+    axios.get('../static/resources/Translation/' + this.translationLang + '/' + this.translationLang + '_translation_1.json')
       .then(response => {
         this.translation = response.data
       })
@@ -105,7 +106,7 @@ export default {
         })
     },
     getTranslation: function (val) {
-      axios.get('../static/resources/Translation/en_translation_' + val + '.json')
+      axios.get('../static/resources/Translation/' + this.translationLang + '/' + this.translationLang + '_translation_' + val + '.json')
         .then(response => {
           this.translation = response.data
         })
