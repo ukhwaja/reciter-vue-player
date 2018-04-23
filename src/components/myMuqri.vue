@@ -95,7 +95,7 @@ export default {
   },
 
   methods: {
-    play: _.debounce(
+    play: _.throttle(
       function (event) {
         $(event.target).toggleClass('active')
         if ($('audio')[0].paused && $(event.target).hasClass('active')) {
@@ -107,7 +107,7 @@ export default {
         } else {
           $('audio')[0].pause()
         }
-      }, 100
+      }, 16
     ),
     getSurah: function (val) {
       axios.get('../static/resources/Surah/surah_' + val + '.json')
