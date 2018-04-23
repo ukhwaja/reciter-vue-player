@@ -18,13 +18,13 @@
       </div>
       <div class="row centered">
         <div class="ui big buttons teal">
-          <div @click="makeActive" class="ui button">
+          <div v-on:click="play" class="ui button">
             <i class="play icon"></i> Play
           </div>
-          <div @click="makeActive" class="ui button">
+          <div v-on:click="repeat" class="ui button">
             <i class="redo alternate icon"></i> Repeat
           </div>
-          <div @click="makeActive" class="ui button">
+          <div class="ui button">
             <i class="hourglass half icon"></i> Delay
           </div>
         </div>
@@ -92,9 +92,24 @@ export default {
   },
 
   methods: {
-    makeActive: _.debounce(
+    play: _.debounce(
       function (event) {
         $(event.target).toggleClass('active')
+        if ($('audio')[0].paused) {
+          $('audio')[0].play()
+        } else {
+          $('audio')[0].pause()
+        }
+      }, 100
+    ),
+    repeat: _.debounce(
+      function (event) {
+        $(event.target).toggleClass('active')
+        if ($(event.target).hasClass('active')) {
+          $('audio').attr('loop', 'true')
+        } else {
+          $('audio').removeAttr('loop')
+        }
       }, 100
     ),
     getSurah: function (val) {
@@ -137,7 +152,7 @@ export default {
     },
     audioURL: (url) => {
       console.log(url)
-      $('source').load(url)
+      $('audio').load(url)
     }
   },
 
