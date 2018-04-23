@@ -18,10 +18,10 @@
       </div>
       <div class="row centered">
         <div class="ui big buttons teal">
-          <div v-on:click="play" class="ui button">
+          <div v-on:click="play" class="ui button" id="play-button">
             <i class="play icon"></i> Play
           </div>
-          <div v-on:click="repeat" class="ui button">
+          <div class="ui button">
             <i class="redo alternate icon"></i> Repeat
           </div>
           <div class="ui button">
@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <audio controls><source :src=audioURL></audio>
+    <audio><source :src=audioURL></audio>
     <div class="slate_segment ui stacked segment">
       <div class="slate_loader ui inverted">
         <div class="ui text loader">Loading</div>
@@ -89,26 +89,23 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
+    $(document).ready(function () {
+      $('select').dropdown()
+    })
   },
 
   methods: {
     play: _.debounce(
       function (event) {
         $(event.target).toggleClass('active')
-        if ($('audio')[0].paused) {
+        if ($('audio')[0].paused && $(event.target).hasClass('active')) {
           $('audio')[0].play()
+          var duration = $('audio')[0].duration * 1000
+          setTimeout(function () {
+            $(event.target).toggleClass('active')
+          }, duration)
         } else {
           $('audio')[0].pause()
-        }
-      }, 100
-    ),
-    repeat: _.debounce(
-      function (event) {
-        $(event.target).toggleClass('active')
-        if ($(event.target).hasClass('active')) {
-          $('audio').attr('loop', 'true')
-        } else {
-          $('audio').removeAttr('loop')
         }
       }, 100
     ),
@@ -170,15 +167,11 @@ export default {
       return ans
     },
     audioURL: function () {
-      return 'http://www.everyayah.com/data/Ibrahim_Akhdar_32kbps/' + this.surahAudioNumber + this.verseAudioNumber + '.mp3'
+      return 'http://www.everyayah.com/data/Ibrahim_Akhdar_32kbps/' + this.surahAudioNumber + this.verseAudioNumber + '.mp3?'
     }
   }
 
 }
-
-$(document).ready(function () {
-  $('select').dropdown()
-})
 </script>
 
 <style scoped>
