@@ -97,15 +97,17 @@ export default {
   methods: {
     play: _.throttle(
       function (event) {
-        $(event.target).toggleClass('active')
-        if ($('audio')[0].paused && $(event.target).hasClass('active')) {
+        if ($('audio')[0].paused) {
+          $(event.target).toggleClass('active')
           $('audio')[0].play()
           var duration = $('audio')[0].duration * 1000
-          setTimeout(function () {
-            $(event.target).toggleClass('active')
+          var timer = setTimeout(function () {
+            $(event.target).removeClass('active')
           }, duration)
         } else {
-          $('audio')[0].pause()
+          $(event.target).removeClass('active')
+          $('audio')[0].load()
+          clearTimeout(timer)
         }
       }, 16
     ),
@@ -149,7 +151,7 @@ export default {
     },
     audioURL: (url) => {
       console.log(url)
-      $('audio').load(url)
+      $('audio')[0].load(url)
     }
   },
 
@@ -167,7 +169,7 @@ export default {
       return ans
     },
     audioURL: function () {
-      return 'http://www.everyayah.com/data/Ibrahim_Akhdar_32kbps/' + this.surahAudioNumber + this.verseAudioNumber + '.mp3?'
+      return 'http://www.everyayah.com/data/Ibrahim_Akhdar_32kbps/' + this.surahAudioNumber + this.verseAudioNumber + '.mp3'
     }
   }
 
