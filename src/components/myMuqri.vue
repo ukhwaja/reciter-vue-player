@@ -30,6 +30,7 @@
         </div>
       </div>
     </div>
+    <audio controls><source :src=audioURL></audio>
     <div class="slate_segment ui stacked segment">
       <div class="slate_loader ui inverted">
         <div class="ui text loader">Loading</div>
@@ -133,6 +134,28 @@ export default {
       this.getSurah(val)
       this.getTranslation(val)
       this.showText()
+    },
+    audioURL: (url) => {
+      console.log(url)
+      $('source').load(url)
+    }
+  },
+
+  computed: {
+    surahAudioNumber: function () {
+      var str = '' + this.surahNumber
+      var pad = '000'
+      var ans = pad.substring(0, pad.length - str.length) + str
+      return ans
+    },
+    verseAudioNumber: function () {
+      var str = '' + this.verseNumber
+      var pad = '000'
+      var ans = pad.substring(0, pad.length - str.length) + str
+      return ans
+    },
+    audioURL: function () {
+      return 'http://www.everyayah.com/data/Ibrahim_Akhdar_32kbps/' + this.surahAudioNumber + this.verseAudioNumber + '.mp3'
     }
   }
 
