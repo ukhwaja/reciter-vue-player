@@ -1,19 +1,20 @@
 <template>
   <div class="main">
     <div class="ui grid">
-      <div class="row centered ui big input">
-        <select class="ui dropdown" v-model="surahNumber">
-          <option v-for="(surah, index) in surahs" :key="index" :value="index + 1">{{surah.index}} - {{surah.title}}</option>
-        </select>
+      <div class="row centered">
+        <div class="ui action big input labeled">
+          <div class="ui label">Surah</div>
+            <select class="ui search dropdown" v-model="surahNumber">
+              <option v-for="(surah, index) in surahs" :key="index" :value="index + 1">{{surah.index}} - {{surah.title}}</option>
+            </select>
+        </div>
       </div>
       <div class="row centered">
         <div class="ui action big input labeled">
           <div class="ui label">Verse</div>
-          <input class="input_verse" v-model="verseNumber" type="number" min="1" v-bind:max="verses.count" size="3" value="1">
-          <button type="button" v-if="verseNumber > 1" @click="verseNumber--" class="ui teal button">-</button>
-          <button type="button" v-else class="ui disabled teal button">-</button>
-          <button type="button" v-if="verseNumber < verses.count" @click="verseNumber++" class="ui teal button">+</button>
-          <button type="button" v-else class="ui disabled teal button">+</button>
+          <select class="ui search dropdown" v-model="verseNumber">
+            <option :class="index == verseNumber ? 'item active selected' : 'item'" v-for="index in verses.count" :key="index" :value="index">{{index}}</option>
+          </select>
         </div>
       </div>
       <div class="row centered">
@@ -177,6 +178,8 @@ export default {
 </script>
 
 <style scoped>
+@import url(https://fonts.googleapis.com/earlyaccess/amiri.css);
+
 input[type='number'] {
     -moz-appearance:textfield;
 }
@@ -194,6 +197,8 @@ input::-webkit-inner-spin-button {
 .verse {
   text-align: right;
   font-size: 22pt;
+  font-family: 'amiri', serif;
+  line-height: 2em;
 }
 .input_verse {
   width: 80px;
@@ -201,8 +206,9 @@ input::-webkit-inner-spin-button {
   min-width: 80px;
 }
 .translation[lang='en'] {
-  font-size: 10pt;
+  font-size: 14pt;
   text-align: left;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .slate_segment {
   background-color: rgb(123, 226, 209);
