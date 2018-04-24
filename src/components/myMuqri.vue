@@ -5,7 +5,7 @@
         <div class="ui action big input labeled">
           <div class="ui label">Surah</div>
             <select class="ui search dropdown" v-model="surahNumber">
-              <option v-for="(surah, index) in surahs" :key="index" :value="index + 1">{{surah.index}} - {{surah.title}}</option>
+              <option v-for="(surah, index) in surahs" :key="index" :value="index + 1">{{index + 1}} - {{surah.title}}</option>
             </select>
         </div>
       </div>
@@ -36,8 +36,8 @@
       <div class="slate_loader ui inverted">
         <div class="ui text loader">Loading</div>
         <div class="slate_text ui text">
-          <p v-if="verses.verse" class="verse"><strong class>{{verses.verse["verse_" + verseNumber]}}</strong></p>
-          <p v-if="translation.verse" class="translation" lang="en"><strong class>{{translation.verse["verse_" + verseNumber]}}</strong></p>
+          <p dir="rtl" lang="ar" v-if="verses.verse" class="verse">{{verses.verse["verse_" + verseNumber]}}<span :class="verseNumber < 10 ? 'end_verse end_verse_0' : 'end_verse end_verse_1'"> {{verseNumber}}</span></p>
+          <p v-if="translation.verse" class="translation" lang="en">{{translation.verse["verse_" + verseNumber]}}</p>
         </div>
       </div>
     </div>
@@ -178,7 +178,14 @@ export default {
 </script>
 
 <style scoped>
-@import url(https://fonts.googleapis.com/earlyaccess/amiri.css);
+@font-face {
+  font-family: 'UthmanTN1';
+  src: url('../fonts/UthmanTN1.otf') format('opentype');
+}
+@font-face {
+  font-family: 'UthmanTN1B';
+  src: url('../fonts/UthmanTN1B.otf') format('opentype');
+}
 
 input[type='number'] {
     -moz-appearance:textfield;
@@ -191,13 +198,10 @@ input::-webkit-inner-spin-button {
   max-width: 450px;
   margin: 0 auto;
 }
-.form {
-  background-color: lightblue;
-}
 .verse {
   text-align: right;
   font-size: 22pt;
-  font-family: 'amiri', serif;
+  font-family: 'UthmanTN1B';
   line-height: 2em;
 }
 .input_verse {
@@ -218,5 +222,28 @@ input::-webkit-inner-spin-button {
 }
 h1, h2 {
   font-weight: normal;
+}
+.end_verse {
+  font-size: 10pt;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  right: 10px;
+  top: -4px;
+  position: relative;
+  white-space: nowrap;
+}
+.end_verse_0:before {
+  content: '\06DD';
+  position: absolute;
+  right: -7.5px;
+  top: -21px;
+  font-size: 20pt;
+}
+.end_verse_1:before {
+  content: '\06DD';
+  position: absolute;
+  right: -4px;
+  top: -21px;
+  font-size: 20pt;
 }
 </style>
