@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <MyMuqri/>
+    <MyReciter/>
     <footer>
       <div>Text JSON from <a href="https://github.com/semarketir/quranjson" target="_blank">github</a></div>
       <div>Audio from <a href="http://everyayah.com/data/status.php" target="_blank">everyayah.com</a></div>
@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import MyMuqri from './components/myMuqri'
+import MyReciter from './components/myReciter'
 
 export default {
   name: 'App',
   components: {
-    MyMuqri
+    MyReciter
   }
 }
 </script>

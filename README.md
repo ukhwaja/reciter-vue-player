@@ -1,4 +1,4 @@
-# my-muqri
+# my-reciter
 
 > Memorize Qur'an App
 
